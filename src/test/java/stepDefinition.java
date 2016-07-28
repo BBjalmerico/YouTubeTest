@@ -4,7 +4,12 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -22,36 +27,48 @@ public class stepDefinition {
 
     @After
     public void cleanup(){
-//        driver.close();
+        driver.close();
     }
 
-    @Given("^I navigate to YouTube$")
+    @Given("^I navigate to my YouTube video$")
     public void navigate(){
-        driver.navigate().to("http://Youtube.com");
+        driver.get("http://Youtube.com/watch?v=4aeETEoNfOg");
     }
 
-    @Given("^I search for my video$")
-    public void vidSearch(){
-        driver.findElement(By.name("search_query")).sendKeys("1979");
-        driver.findElement(By.id("search-btn")).click();
+    @Given("I verify that I am on my videos page")
+    public void vidCheck() throws InterruptedException {
+        Assert.assertTrue("Error: On incorrect page", driver.getCurrentUrl().equals("https://www.youtube.com/watch?v=4aeETEoNfOg"));
+        Thread.sleep(5000);
     }
 
-    @And("^I locate my video$")
-    public void vidSelect(){
-        driver.findElement(By.cssSelector("[@href='/watch?v=4aeETEoNfOg']")).click();
-    }
-
-    @When("^I start my video$")
+    @And("^I disable autoplay$")
     public void vidStart(){
+        if (driver.findElement(By.id("autoplay-checkbox")).isEnabled()) {
+            driver.findElement(By.id("autoplay-checkbox")).click();
+        }
+        else {
+            System.out.println("Autoplay already disabled");
+        }
+    }
+
+    @When("^I pause my video")
+    public void vidEnterFull() throws InterruptedException {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.getElementById(\"movie_player\").play()");
+    }
+
+    @And("^I increase the resolution$")
+    public void vidHD(){
 
     }
 
-    @And("^I make it fullscreen$")
-    public void vidEnlarge(){
+    @Then("^I close fullscreen$")
+    public void vidExitFull(){
 
     }
 
-    @Then("^I skip to the end$")
+    @And("^Skip to the end$")
     public void vidSkip(){
 
     }

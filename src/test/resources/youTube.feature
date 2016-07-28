@@ -1,12 +1,13 @@
 Feature: This feature tests a Youtube video
 
   Background: I go to the page
-    Given I navigate to YouTube
+    Given I navigate to my YouTube video
 
     Scenario: I test my video
-      Given I search for my video
-      And I locate my video
-      When I start my video
-      And I make it fullscreen
-      Then I skip to the end
+      Given I verify that I am on my videos page
+      And I disable autoplay
+      When I pause my video
+      And I increase the resolution
+      Then I close fullscreen
+      And Skip to the end
       And Verify that it's over
