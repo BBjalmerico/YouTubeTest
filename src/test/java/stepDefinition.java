@@ -38,7 +38,7 @@ public class stepDefinition {
 
     @And("^I locate my video$")
     public void vidSelect(){
-        driver.findElement(By.xpath("//a[@href='/watch?v=4aeETEoNfOg']")).click();
+        driver.findElement(By.cssSelector("[@href='/watch?v=4aeETEoNfOg']")).click();
     }
 
     @When("^I start my video$")
