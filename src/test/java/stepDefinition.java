@@ -5,12 +5,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
@@ -30,15 +28,20 @@ public class stepDefinition {
         driver.close();
     }
 
-    @Given("^I navigate to my YouTube video$")
-    public void navigate(){
-        driver.get("http://Youtube.com/watch?v=4aeETEoNfOg");
+    @Given("^I navigate to YouTube$")
+    public void navigate() throws InterruptedException {
+        driver.get("http://Youtube.com");
+        Thread.sleep(1000);
     }
 
-    @Given("I verify that I am on my videos page")
+    @Given("^I find my video after searching$")
     public void vidCheck() throws InterruptedException {
-        Assert.assertTrue("Error: On incorrect page", driver.getCurrentUrl().equals("https://www.youtube.com/watch?v=4aeETEoNfOg"));
+        driver.findElement(By.id("masthead-search-term")).sendKeys("Smashing pumpkins 1979");
+        driver.findElement(By.id("search-btn")).click();
         Thread.sleep(5000);
+
+        driver.findElement(By.xpath("//a[@href='/watch?v=4aeETEoNfOg']")).click();
+        Thread.sleep(9000);
     }
 
     @And("^I disable autoplay$")
@@ -49,32 +52,47 @@ public class stepDefinition {
         else {
             System.out.println("Autoplay already disabled");
         }
+//        driver.findElement(By.xpath("//button[@title='Mute']")).click();
     }
 
-    @When("^I pause my video")
-    public void vidEnterFull() throws InterruptedException {
+    @When("^I skip the ad$")
+    public void vidPause() throws InterruptedException {
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("document.getElementById(\"movie_player\").play()");
+        System.out.println(js.executeScript("return document.title"));
+
+        if(driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).isEnabled()){
+            driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).click();
+        }
     }
 
-    @And("^I increase the resolution$")
-    public void vidHD(){
-
+    @And("^I make my video fullscreen$")
+    public void vidHD() throws InterruptedException {
+        driver.findElement(By.xpath("//button[@title='Full screen']")).click();
+        Thread.sleep(5000);
     }
 
-    @Then("^I close fullscreen$")
-    public void vidExitFull(){
+    @Then("^I turn its quality up$")
+    public void vidExitFull() throws InterruptedException {
 
     }
 
     @And("^Skip to the end$")
-    public void vidSkip(){
+    public void vidSkip() throws InterruptedException {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        js.executeScript("document.getElementsByTagName(\"video\")[0].currentTime = 260;");
+        Thread.sleep(5000);
+
 
     }
 
     @And("^Verify that it's over$")
     public void vidVerify(){
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        Assert.assertTrue("Video has not ended", Boolean.valueOf(js.executeScript("return document.getElementsByTagName(\"video\")[0].ended;").toString()));
 
     }
 
