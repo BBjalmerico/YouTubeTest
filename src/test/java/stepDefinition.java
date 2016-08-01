@@ -4,11 +4,8 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
@@ -16,83 +13,80 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  */
 public class stepDefinition {
 
-    WebDriver driver;
+    WebDriver driver = new FirefoxDriver();
+    InitPage initPage;
+    SearchPage searchPage;
+    VideoPage videoPage;
 
     @Before
     public void setup(){
-        driver = new FirefoxDriver();
     }
 
     @After
-    public void cleanup(){
-        driver.close();
+    public void close(){
+
     }
 
     @Given("^I navigate to YouTube$")
     public void navigate() throws InterruptedException {
-        driver.get("http://Youtube.com");
-        Thread.sleep(1000);
+        InitPage initPage = new InitPage(driver);
+        initPage.navigateToInit();
     }
 
     @Given("^I find my video after searching$")
     public void vidCheck() throws InterruptedException {
-        driver.findElement(By.id("masthead-search-term")).sendKeys("Smashing pumpkins 1979");
-        driver.findElement(By.id("search-btn")).click();
-        Thread.sleep(5000);
 
-        driver.findElement(By.xpath("//a[@href='/watch?v=4aeETEoNfOg']")).click();
+        searchPage = initPage.navigateToSearchPage("The Smashing Pumpkins 1979");
+
         Thread.sleep(9000);
     }
 
     @And("^I disable autoplay$")
     public void vidStart() throws InterruptedException {
-        if (driver.findElement(By.id("autoplay-checkbox")).isEnabled()) {
-            driver.findElement(By.id("autoplay-checkbox")).click();
-        }
-        else {
-            System.out.println("Autoplay already disabled");
-        }
+        videoPage.disableAutoplay();
+
+//        if (driver.findElement(By.id("autoplay-checkbox")).isEnabled()) {
+//            driver.findElement(By.id("autoplay-checkbox")).click();
+//        }
+//        else {
+//            System.out.println("Autoplay already disabled");
+//        }
         Thread.sleep(15000);
 //        driver.findElement(By.xpath("//button[@title='Mute']")).click();
     }
 
     @When("^I skip the ad$")
     public void vidPause() throws InterruptedException {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        System.out.println(js.executeScript("return document.title"));
 
-//        if(driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).isDisplayed()){
-//            driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).click();
-//        }
     }
 
     @And("^I make my video fullscreen$")
     public void vidHD() throws InterruptedException {
-        driver.findElement(By.xpath("//button[@title='Full screen']")).click();
+//        driver.findElement(By.xpath("//button[@title='Full screen']")).click();
+        videoPage.setFullscreen();
     }
 
     @Then("^I mute the volume$")
     public void vidExitFull() throws InterruptedException {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("document.getElementsByTagName(\"video\")[0].volume = 0.5;");
+//        JavascriptExecutor js = (JavascriptExecutor) driver;
+//        js.executeScript("document.getElementsByTagName(\"video\")[0].volume = 0.5;");
+        videoPage.setVolume(0.5f);
 
         Thread.sleep(3000);
     }
 
     @And("^Skip to the end$")
     public void vidSkip() throws InterruptedException {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("document.getElementsByTagName(\"video\")[0].currentTime = 260;");
+//        JavascriptExecutor js = (JavascriptExecutor) driver;
+//        js.executeScript("document.getElementsByTagName(\"video\")[0].currentTime = 260;");
+        videoPage.skipTo(260);
 
         Thread.sleep(5000);
     }
 
     @And("^Verify that it's over$")
     public void vidVerify(){
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        Assert.assertTrue("Video has not ended", Boolean.valueOf(js.executeScript("return document.getElementsByTagName(\"video\")[0].ended;").toString()));
-
+        videoPage.verifyEnded();
     }
 
 
