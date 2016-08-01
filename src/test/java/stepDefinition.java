@@ -45,47 +45,46 @@ public class stepDefinition {
     }
 
     @And("^I disable autoplay$")
-    public void vidStart(){
+    public void vidStart() throws InterruptedException {
         if (driver.findElement(By.id("autoplay-checkbox")).isEnabled()) {
             driver.findElement(By.id("autoplay-checkbox")).click();
         }
         else {
             System.out.println("Autoplay already disabled");
         }
+        Thread.sleep(15000);
 //        driver.findElement(By.xpath("//button[@title='Mute']")).click();
     }
 
     @When("^I skip the ad$")
     public void vidPause() throws InterruptedException {
-
         JavascriptExecutor js = (JavascriptExecutor) driver;
         System.out.println(js.executeScript("return document.title"));
 
-        if(driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).isEnabled()){
-            driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).click();
-        }
+//        if(driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).isDisplayed()){
+//            driver.findElement(By.xpath("//button[@class='videoAdUiSkipButton videoAdUiAction']")).click();
+//        }
     }
 
     @And("^I make my video fullscreen$")
     public void vidHD() throws InterruptedException {
         driver.findElement(By.xpath("//button[@title='Full screen']")).click();
-        Thread.sleep(5000);
     }
 
-    @Then("^I turn its quality up$")
+    @Then("^I mute the volume$")
     public void vidExitFull() throws InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.getElementsByTagName(\"video\")[0].volume = 0.5;");
 
+        Thread.sleep(3000);
     }
 
     @And("^Skip to the end$")
     public void vidSkip() throws InterruptedException {
-
         JavascriptExecutor js = (JavascriptExecutor) driver;
-
         js.executeScript("document.getElementsByTagName(\"video\")[0].currentTime = 260;");
+
         Thread.sleep(5000);
-
-
     }
 
     @And("^Verify that it's over$")

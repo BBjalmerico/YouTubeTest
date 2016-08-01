@@ -8,6 +8,6 @@ Feature: This feature tests a Youtube video
       And I disable autoplay
       When I skip the ad
       And I make my video fullscreen
-      Then I make my video fullscreen
+      Then I mute the volume
       And Skip to the end
       And Verify that it's over
