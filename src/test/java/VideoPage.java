@@ -56,9 +56,21 @@ public class VideoPage extends AbstractPage
 
     public VideoPage skipToEnd()
     {
-        (new Actions(driver))
-                .dragAndDrop(driver.findElement(By.className("ytp-progress-list")),
-                driver.findElement(By.xpath("//button[@title='Full screen' or @title='Exit full screen']"))).perform();
+        int retry = 0;
+        int maxRetry = 6;
+
+        while (retry < maxRetry) {
+            try{
+                (new Actions(driver))
+                        .dragAndDrop(driver.findElement(By.className("ytp-progress-list")),
+                                driver.findElement(By.xpath("//button[@title='Full screen' or @title='Exit full screen']"))).perform();
+                retry = 0;
+                break;
+            }catch (NoSuchElementException e){
+                myWait(500);
+                retry++;
+            }
+        }
 
         return new VideoPage(driver);
     }

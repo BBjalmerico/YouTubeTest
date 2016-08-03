@@ -12,14 +12,14 @@ public class SearchPage extends AbstractPage
         super(driver);
     }
 
-    public VideoPage parseVideo()
+    public VideoPage parseVideo(String query)
     {
         int retry = 0;
         int maxRetry = 6;
 
         while(retry < maxRetry){
             try {
-                driver.findElement(By.xpath("//a[@href='/watch?v=4aeETEoNfOg']")).click();
+                driver.findElement(By.xpath("//a[@href='/watch?v=" + query + "']")).click();
                 break;
             } catch (NoSuchElementException e) {
                 myWait(500);

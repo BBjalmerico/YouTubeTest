@@ -35,11 +35,15 @@ public class stepDefinition
         initPage.navigateToInit();
     }
 
-    @And("^I find my video after searching$")
-    public void vidCheck()
+    @And("^I search for \"([^\"]*)\"$")
+    public void vidCheck(String query)
     {
-        searchPage = initPage.navigateToSearchPage("The Smashing Pumpkins 1979");
-        videoPage = searchPage.parseVideo();
+        searchPage = initPage.navigateToSearchPage(query);
+    }
+
+    @And("^I find the video with tag \"([^\"]*)\"$")
+    public void findSpecific(String query){
+        videoPage = searchPage.parseVideo(query);
     }
 
     @When("^I mute the volume$")
