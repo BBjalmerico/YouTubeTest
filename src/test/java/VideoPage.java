@@ -29,7 +29,7 @@ public class VideoPage extends AbstractPage
             }
         }
         if (retry >= maxRetry){
-            System.out.println("Timed out while disabling Autoplay");
+            Assert.fail("Timed out while disabling Autoplay");
         }
 
         return new VideoPage(driver);
@@ -49,6 +49,10 @@ public class VideoPage extends AbstractPage
                 myWait(500);
                 retry++;
             }
+        }
+        if(retry >= maxRetry)
+        {
+            Assert.fail("Timed out attempting to make video fullscreen");
         }
 
         return new VideoPage(driver);
@@ -71,6 +75,10 @@ public class VideoPage extends AbstractPage
                 retry++;
             }
         }
+        if(retry >= maxRetry)
+        {
+            Assert.fail("Timed out while trying to advance video");
+        }
 
         return new VideoPage(driver);
     }
@@ -91,7 +99,7 @@ public class VideoPage extends AbstractPage
             }
         }
         if (retry >= maxRetry){
-            System.out.println("Timed out while muting volume");
+            Assert.fail("Timed out while muting volume");
         }
 
         return new VideoPage(driver);

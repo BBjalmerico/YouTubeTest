@@ -42,7 +42,8 @@ public class stepDefinition
     }
 
     @And("^I find the video with tag \"([^\"]*)\"$")
-    public void findSpecific(String query){
+    public void findSpecific(String query)
+    {
         videoPage = searchPage.parseVideo(query);
     }
 

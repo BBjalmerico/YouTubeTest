@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -27,10 +28,9 @@ public class SearchPage extends AbstractPage
             }
         }
         if(retry >= maxRetry){
-            System.out.println("Timed out while parsing for video");
+            Assert.fail("Timed out while parsing for video");
         }
 
         return new VideoPage(driver);
     }
-
 }

@@ -3,7 +3,8 @@ import org.openqa.selenium.WebDriver;
 /**
  * Created by Jonathan on 8/1/2016.
  */
-public class AbstractPage {
+public class AbstractPage
+{
     protected WebDriver driver;
 
     public AbstractPage(WebDriver driver)
