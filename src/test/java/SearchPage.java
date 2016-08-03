@@ -1,22 +1,34 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Created by Jonathan on 8/1/2016.
  */
-public class SearchPage extends AbstractPage {
-
-    public SearchPage(WebDriver driver) {
+public class SearchPage extends AbstractPage
+{
+    public SearchPage(WebDriver driver)
+    {
         super(driver);
     }
 
-    public VideoPage parseVideo(){
-        WebDriverWait wait = new WebDriverWait(driver,10);
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/watch?v=4aeETEoNfOg']")));
+    public VideoPage parseVideo()
+    {
+        int retry = 0;
+        int maxRetry = 6;
 
-        driver.findElement(By.xpath("//a[@href='/watch?v=4aeETEoNfOg']")).click();
+        while(retry < maxRetry){
+            try {
+                driver.findElement(By.xpath("//a[@href='/watch?v=4aeETEoNfOg']")).click();
+                break;
+            } catch (NoSuchElementException e) {
+                myWait(500);
+                retry++;
+            }
+        }
+        if(retry >= maxRetry){
+            System.out.println("Timed out while parsing for video");
+        }
 
         return new VideoPage(driver);
     }

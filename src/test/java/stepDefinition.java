@@ -10,61 +10,65 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 /**
  * Created by Jonathan on 7/28/2016.
  */
-public class stepDefinition {
-
+public class stepDefinition
+{
     WebDriver driver = new FirefoxDriver();
     InitPage initPage;
     SearchPage searchPage;
     VideoPage videoPage;
 
     @Before
-    public void setup(){
+    public void setup()
+    {
         initPage = new InitPage(driver);
     }
 
     @After
-    public void shutDown(){
+    public void shutDown()
+    {
         videoPage.cleanup();
     }
 
     @Given("^I navigate to YouTube$")
-    public void navigate() throws InterruptedException {
+    public void navigate()
+    {
         initPage.navigateToInit();
     }
 
     @And("^I find my video after searching$")
-    public void vidCheck() throws InterruptedException {
+    public void vidCheck()
+    {
         searchPage = initPage.navigateToSearchPage("The Smashing Pumpkins 1979");
         videoPage = searchPage.parseVideo();
     }
 
     @When("^I mute the volume$")
-    public void vidExitFull() throws InterruptedException {
+    public void vidExitFull()
+    {
         videoPage.setMute();
     }
 
     @And("^I disable autoplay$")
-    public void vidStart() throws InterruptedException {
+    public void vidStart()
+    {
         videoPage.disableAutoplay();
     }
 
     @And("^I make my video fullscreen$")
-    public void vidHD() throws InterruptedException {
+    public void vidHD()
+    {
         videoPage.setFullscreen();
     }
 
     @Then("^I skip through my video$")
-    public void vidSkip(){
+    public void vidSkip()
+    {
         videoPage.skipToEnd();
     }
 
-    @And("^I wait until the video ends$")
-    public void vidWait() throws InterruptedException {
-        videoPage.waitToEnd();
-    }
-
     @And("^Verify that it's over$")
-    public void vidVerify(){
+    public void vidVerify()
+    {
         videoPage.verifyEnded();
     }
 }
