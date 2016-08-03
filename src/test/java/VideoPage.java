@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import sun.security.util.PendingException;
 
 /**
  * Created by Jonathan on 8/1/2016.
@@ -122,9 +123,9 @@ public class VideoPage extends AbstractPage
                     break;
                 }
                 else{
-                    throw new myPendingException("Video not yet finished");
+                    throw new PendingException();
                 }
-            } catch (myPendingException e)
+            } catch (PendingException e)
             {
                 retry++;
                 myWait(1000);

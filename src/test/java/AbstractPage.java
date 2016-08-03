@@ -3,7 +3,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * Created by Jonathan on 8/1/2016.
  */
-public class AbstractPage
+abstract class AbstractPage
 {
     protected WebDriver driver;
 
@@ -30,13 +30,6 @@ public class AbstractPage
         while (currentTime - startTime <= time)
         {
             currentTime = System.currentTimeMillis();
-        }
-    }
-
-    class myPendingException extends Exception
-    {
-        public myPendingException(String msg){
-            super(msg);
         }
     }
 }
