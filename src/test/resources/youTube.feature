@@ -6,6 +6,7 @@ Feature: This feature tests a Youtube video
         And I find the video with tag "4aeETEoNfOg"
         When I mute the volume
         And I make my video fullscreen
+        And I wait for the advertisement to finish
         Then I skip through my video
         And Verify that it's over
 

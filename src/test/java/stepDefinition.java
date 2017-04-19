@@ -65,6 +65,12 @@ public class stepDefinition
         videoPage.setFullscreen();
     }
 
+    @And("^I wait for the advertisement to finish$")
+    public void vidAd()
+    {
+//        videoPage.waitForAd();
+    }
+
     @Then("^I skip through my video$")
     public void vidSkip()
     {
